@@ -3,9 +3,12 @@ package com.hibernate.tutorial.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +19,7 @@ public class Employee implements Serializable {
 
 	@Id
 	@Column(name = "employee_id", nullable = false)
-	private Long id;
+	private long id;
 
 	@Column(name = "first_name", nullable = false)
 	private String fName;
@@ -26,6 +29,10 @@ public class Employee implements Serializable {
 
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
+
+	@OneToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "address_id")
+	private Address address;
 
 	public Employee() {
 	}
@@ -69,9 +76,18 @@ public class Employee implements Serializable {
 		this.birthDate = birthDate;
 	}
 
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	@Override
 	public String toString() {
-		return "Employee [code=" + id + ", fName=" + fName + ", lName=" + lName + ", birthDate=" + birthDate + "]";
+		return "Employee [id=" + id + ", fName=" + fName + ", lName=" + lName + ", birthDate=" + birthDate
+				+ ", address=" + address + "]";
 	}
 
 }
